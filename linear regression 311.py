@@ -1,10 +1,11 @@
+import re
 import numpy as np
 import pandas as pd
 
 
 def softmax(Z):
-    Z_shifted = Z - np.max(Z, axis=1, keepdims=True)
-    exp_Z = np.exp(Z_shifted)
+    Z = Z - np.max(Z, axis=1, keepdims=True)
+    exp_Z = np.exp(Z)
     return exp_Z / np.sum(exp_Z, axis=1, keepdims=True)
 
 
@@ -15,130 +16,187 @@ def one_hot(labels, num_classes):
     return Y
 
 
-def cross_entropy_loss(Y, P):
-    eps = 1e-12
-    P = np.clip(P, eps, 1 - eps)
-    return -np.mean(np.sum(Y * np.log(P), axis=1))
+def tokenize(text):
+    return re.findall(r"[a-z']+", str(text).lower())
+
+
+def build_vocab(text_series, max_features=300, min_freq=2):
+    counts = {}
+    for text in text_series:
+        for word in tokenize(text):
+            counts[word] = counts.get(word, 0) + 1
+
+    words = []
+    for word, count in counts.items():
+        if count >= min_freq:
+            words.append((word, count))
+
+    words.sort(key=lambda x: (-x[1], x[0]))
+    words = words[:max_features]
+
+    vocab = {}
+    for i, (word, _) in enumerate(words):
+        vocab[word] = i
+    return vocab
+
+
+def text_to_bow_matrix(text_series, vocab):
+    X = np.zeros((len(text_series), len(vocab)))
+    for i, text in enumerate(text_series):
+        for word in tokenize(text):
+            if word in vocab:
+                X[i, vocab[word]] += 1
+    return X
 
 
 def predict_probs(X, W, b):
-    scores = X @ W + b
-    return softmax(scores)
+    return softmax(X @ W + b)
 
 
-def predict(X, W, b, classes):
-    probs = predict_probs(X, W, b)
-    pred_int = np.argmax(probs, axis=1)
-    return classes[pred_int]
-
-
-def compute_accuracy(y_pred, y_true):
-    return np.mean(y_pred == y_true)
-
-
-
-df = pd.read_csv("ml_challenge_dataset_fixed.csv")
-
-df = df.dropna(subset=["This art piece makes me feel sombre."])
-
-df = df.drop(columns=[
-    "unique_id",
-    "Describe how this painting makes you feel.",
-    "If you could purchase this painting, which room would you put that painting in?",
-    "If you could view this art in person, who would you want to view it with?",
-    "What season does this art piece remind you of?",
-    "If this painting was a food, what would be?",
-    "Imagine a soundtrack for this painting. Describe that soundtrack without naming any objects in the painting."
-])
-
-emotion_cols = [
-    "This art piece makes me feel sombre.",
-    "This art piece makes me feel content.",
-    "This art piece makes me feel calm.",
-    "This art piece makes me feel uneasy."
-]
-
-for col in emotion_cols:
-    df[col] = pd.to_numeric(
-        df[col].astype(str).str.extract(r"(\d+)")[0],
+def preprocess_numeric_column(series):
+    return pd.to_numeric(
+        series.astype(str).str.extract(r"(\d+(\.\d+)?)")[0],
         errors="coerce"
-    )
-
-feature_cols = [col for col in df.columns if col != "Painting"]
-for col in feature_cols:
-    df[col] = pd.to_numeric(df[col], errors="coerce")
-
-df[feature_cols] = df[feature_cols].fillna(0)
+    ).fillna(0.0)
 
 
-df_train = df.sample(frac=0.8, random_state=42)
-df_valid = df.drop(df_train.index)
+def prepare_features(train_df, test_df):
+    numeric_cols = [
+        "On a scale of 1–10, how intense is the emotion conveyed by the artwork?",
+        "This art piece makes me feel sombre.",
+        "This art piece makes me feel content.",
+        "This art piece makes me feel calm.",
+        "This art piece makes me feel uneasy.",
+        "How many prominent colours do you notice in this painting?",
+        "How many objects caught your eye in the painting?",
+        "How much (in Canadian dollars) would you be willing to pay for this painting?"
+    ]
 
-df_train = df_train.reset_index(drop=True)
-df_valid = df_valid.reset_index(drop=True)
+    text_cols = [
+        "Describe how this painting makes you feel.",
+        "Imagine a soundtrack for this painting. Describe that soundtrack without naming any objects in the painting."
+    ]
 
-X_train = df_train.drop(columns=["Painting"]).to_numpy(dtype=float)
-X_valid = df_valid.drop(columns=["Painting"]).to_numpy(dtype=float)
+    categorical_cols = [
+        "If you could purchase this painting, which room would you put that painting in?",
+        "If you could view this art in person, who would you want to view it with?",
+        "What season does this art piece remind you of?",
+        "If this painting was a food, what would be?"
+    ]
 
-t_train = df_train["Painting"].to_numpy()
-t_valid = df_valid["Painting"].to_numpy()
+    for col in numeric_cols:
+        if col in train_df.columns:
+            train_df[col] = preprocess_numeric_column(train_df[col])
+        if col in test_df.columns:
+            test_df[col] = preprocess_numeric_column(test_df[col])
 
-mean = X_train.mean(axis=0)
-std = X_train.std(axis=0)
-std[std == 0] = 1.0
+    for col in text_cols:
+        if col in train_df.columns:
+            train_df[col] = train_df[col].fillna("")
+        if col in test_df.columns:
+            test_df[col] = test_df[col].fillna("")
 
-X_train = (X_train - mean) / std
-X_valid = (X_valid - mean) / std
+    for col in categorical_cols:
+        if col in train_df.columns:
+            train_df[col] = train_df[col].fillna("Missing").astype(str)
+        if col in test_df.columns:
+            test_df[col] = test_df[col].fillna("Missing").astype(str)
 
-X_train = np.nan_to_num(X_train, nan=0.0, posinf=0.0, neginf=0.0)
-X_valid = np.nan_to_num(X_valid, nan=0.0, posinf=0.0, neginf=0.0)
+    numeric_cols_present = [col for col in numeric_cols if col in train_df.columns and col in test_df.columns]
+    categorical_cols_present = [col for col in categorical_cols if col in train_df.columns and col in test_df.columns]
+    text_cols_present = [col for col in text_cols if col in train_df.columns and col in test_df.columns]
+
+    X_train_num = train_df[numeric_cols_present].to_numpy(dtype=float)
+    X_test_num = test_df[numeric_cols_present].to_numpy(dtype=float)
+
+    mean = X_train_num.mean(axis=0)
+    std = X_train_num.std(axis=0)
+    std[std == 0] = 1.0
+
+    X_train_num = (X_train_num - mean) / std
+    X_test_num = (X_test_num - mean) / std
+
+    if len(categorical_cols_present) > 0:
+        X_train_cat_df = pd.get_dummies(train_df[categorical_cols_present], drop_first=False)
+        X_test_cat_df = pd.get_dummies(test_df[categorical_cols_present], drop_first=False)
+        X_train_cat_df, X_test_cat_df = X_train_cat_df.align(X_test_cat_df, join="outer", axis=1, fill_value=0)
+        X_train_cat = X_train_cat_df.to_numpy(dtype=float)
+        X_test_cat = X_test_cat_df.to_numpy(dtype=float)
+    else:
+        X_train_cat = np.zeros((len(train_df), 0))
+        X_test_cat = np.zeros((len(test_df), 0))
+
+    X_train_text_parts = []
+    X_test_text_parts = []
+
+    for col in text_cols_present:
+        vocab = build_vocab(train_df[col], max_features=300, min_freq=2)
+        X_train_bow = text_to_bow_matrix(train_df[col], vocab)
+        X_test_bow = text_to_bow_matrix(test_df[col], vocab)
+        X_train_text_parts.append(X_train_bow)
+        X_test_text_parts.append(X_test_bow)
+
+    if len(X_train_text_parts) > 0:
+        X_train_text = np.hstack(X_train_text_parts)
+        X_test_text = np.hstack(X_test_text_parts)
+    else:
+        X_train_text = np.zeros((len(train_df), 0))
+        X_test_text = np.zeros((len(test_df), 0))
+
+    X_train = np.hstack([X_train_num, X_train_cat, X_train_text])
+    X_test = np.hstack([X_test_num, X_test_cat, X_test_text])
+
+    X_train = np.nan_to_num(X_train, nan=0.0, posinf=0.0, neginf=0.0)
+    X_test = np.nan_to_num(X_test, nan=0.0, posinf=0.0, neginf=0.0)
+
+    return X_train, X_test
 
 
-classes = np.array(sorted(df["Painting"].unique()))
-class_to_int = {classes[i]: i for i in range(len(classes))}
+def train_model(train_df):
+    target_col = "Painting"
+    X_train, _ = prepare_features(train_df.copy(), train_df.copy())
 
-t_train_int = np.array([class_to_int[label] for label in t_train])
-t_valid_int = np.array([class_to_int[label] for label in t_valid])
+    classes = np.array(sorted(train_df[target_col].unique()))
+    class_to_int = {classes[i]: i for i in range(len(classes))}
 
-Y_train = one_hot(t_train_int, len(classes))
-Y_valid = one_hot(t_valid_int, len(classes))
+    t_train = train_df[target_col].to_numpy()
+    t_train_int = np.array([class_to_int[label] for label in t_train])
+    Y_train = one_hot(t_train_int, len(classes))
 
+    n, d = X_train.shape
+    c = len(classes)
 
-n, d = X_train.shape
-c = len(classes)
+    rng = np.random.default_rng(42)
+    W = rng.normal(loc=0.0, scale=0.01, size=(d, c))
+    b = np.zeros((1, c))
 
-W = np.zeros((d, c))
-b = np.zeros((1, c))
+    learning_rate = 0.05
+    num_epochs = 4000
+    lambda_reg = 0.001
 
-learning_rate = 0.03
-num_epochs = 3000
+    for _ in range(num_epochs):
+        P = predict_probs(X_train, W, b)
+        grad_W = (X_train.T @ (P - Y_train)) / n + lambda_reg * W
+        grad_b = np.sum(P - Y_train, axis=0, keepdims=True) / n
+        W -= learning_rate * grad_W
+        b -= learning_rate * grad_b
 
-
-for epoch in range(num_epochs):
-    P = predict_probs(X_train, W, b)
-
-    grad_W = (X_train.T @ (P - Y_train)) / n
-    grad_b = np.sum(P - Y_train, axis=0, keepdims=True) / n
-
-    W -= learning_rate * grad_W
-    b -= learning_rate * grad_b
-
-    if epoch % 500 == 0:
-        train_loss = cross_entropy_loss(Y_train, P)
-        print(f"epoch={epoch}, loss={train_loss:.4f}")
+    return W, b, classes
 
 
-train_pred = predict(X_train, W, b, classes)
-valid_pred = predict(X_valid, W, b, classes)
+def predict_all(filename):
+    train_filename = "ml_challenge_dataset_fixed.csv"
 
-train_acc = compute_accuracy(train_pred, t_train)
-valid_acc = compute_accuracy(valid_pred, t_valid)
+    train_df = pd.read_csv(train_filename)
+    test_df = pd.read_csv(filename)
 
-print("\nTrain accuracy:", train_acc)
-print("Validation accuracy:", valid_acc)
+    train_df = train_df.dropna(subset=["Painting"])
 
-print("\nPredicted label counts:")
-print(pd.Series(valid_pred).value_counts())
+    W, b, classes = train_model(train_df.copy())
+    _, X_test = prepare_features(train_df.copy(), test_df.copy())
 
-print("\nTrue label counts:")
-print(pd.Series(t_valid).value_counts())
+    probs = predict_probs(X_test, W, b)
+    pred_int = np.argmax(probs, axis=1)
+    preds = classes[pred_int]
+
+    return list(preds)
