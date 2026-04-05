@@ -1,3 +1,5 @@
+import sys
+
 import numpy as np
 import pandas as pd
 from model_utils import prepare_test_features, pred_multiclass
@@ -13,3 +15,6 @@ def predict_all(filename):
     classes = params["classes"]
     preds = classes[y]
     return list(preds)
+
+if __name__ == "__main__":
+    predictions = predict_all("ml_challenge_dataset.csv")

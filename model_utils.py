@@ -63,7 +63,7 @@ def one_hot(labels, num_classes):
     return Y
 
 
-def build_vocab(text_series, max_features=500, min_freq=1):
+def build_vocab(text_series, max_features=750, min_freq=5):
     counts = {}
     for text in text_series:
         for word in tokenize(text):
