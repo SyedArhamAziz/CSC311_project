@@ -1,0 +1,481 @@
+C:\Users\brarp\AppData\Local\Python\pythoncore-3.14-64\python.exe "C:\Users\brarp\311\CSC311_project\Explore Dataset.py" 
+Dataset rows: 1686
+Grouping column: Painting
+
+================================================================================
+PAINTING: The Persistence of Memory
+Responses: 562
+
+NUMERIC VALUE COUNTS
+
+On a scale of 1–10, how intense is the emotion conveyed by the artwork?
+  0: 1
+  1: 6
+  2: 18
+  3: 35
+  4: 45
+  5: 54
+  6: 77
+  7: 127
+  7.5: 2
+  8: 135
+  8.5: 1
+  9: 30
+  10: 15
+
+This art piece makes me feel sombre.
+  1: 10
+  2: 32
+  3: 67
+  4: 323
+  5: 111
+
+This art piece makes me feel content.
+  1: 118
+  2: 275
+  3: 105
+  4: 41
+  5: 4
+
+This art piece makes me feel calm.
+  1: 58
+  2: 223
+  3: 138
+  4: 101
+  5: 23
+
+This art piece makes me feel uneasy.
+  1: 15
+  2: 50
+  3: 60
+  4: 295
+  5: 123
+
+How many prominent colours do you notice in this painting?
+  1: 5
+  2: 25
+  3: 102
+  4: 172
+  5: 109
+  6: 48
+  7: 36
+  8: 19
+  9: 7
+  10: 7
+  11: 3
+  12: 4
+  13: 1
+  14: 1
+  20: 2
+  27: 1
+
+How many objects caught your eye in the painting?
+  1: 7
+  2: 10
+  3: 65
+  4: 120
+  5: 137
+  6: 80
+  7: 60
+  8: 26
+  9: 20
+  10: 7
+  11: 5
+  12: 4
+
+TOP 10 WORDS IN TEXT RESPONSES
+
+Describe how this painting makes you feel.
+  time: 314
+  sad: 87
+  clocks: 71
+  how: 57
+  sense: 53
+  uneasy: 51
+  melting: 47
+  not: 43
+  away: 40
+  confused: 36
+
+How much (in Canadian dollars) would you be willing to pay for this painting?
+  pay: 22
+  cad: 16
+  dollars: 15
+  not: 13
+  don't: 7
+  buy: 7
+  am: 6
+  willing: 6
+  much: 5
+  maybe: 5
+
+If you could purchase this painting, which room would you put that painting in?
+  office: 279
+  room: 257
+  living: 177
+  bathroom: 147
+  dining: 80
+  bedroom: 58
+
+If you could view this art in person, who would you want to view it with?
+  yourself: 369
+  friends: 196
+  strangers: 125
+  family: 116
+  members: 116
+  coworkers: 85
+  classmates: 85
+
+What season does this art piece remind you of?
+  fall: 329
+  summer: 151
+  winter: 111
+  spring: 45
+
+If this painting was a food, what would be?
+  bread: 45
+  cheese: 42
+  pizza: 35
+  soup: 27
+  cream: 21
+  ice: 20
+  chocolate: 18
+  cold: 17
+  melted: 16
+  food: 15
+
+Imagine a soundtrack for this painting. Describe that soundtrack without naming any objects in the painting.
+  slow: 196
+  soundtrack: 126
+  sound: 73
+  music: 73
+  piano: 60
+  sad: 52
+  time: 47
+  sounds: 44
+  calm: 43
+  quiet: 42
+
+================================================================================
+PAINTING: The Starry Night
+Responses: 562
+
+NUMERIC VALUE COUNTS
+
+On a scale of 1–10, how intense is the emotion conveyed by the artwork?
+  1: 12
+  2: 19
+  3: 33
+  4: 34
+  5: 63
+  6: 75
+  6.7: 1
+  7: 114
+  8: 76
+  9: 68
+  9.5: 1
+  10: 44
+
+This art piece makes me feel sombre.
+  1: 74
+  2: 187
+  3: 107
+  4: 131
+  5: 38
+
+This art piece makes me feel content.
+  1: 12
+  2: 75
+  3: 103
+  4: 262
+  5: 84
+
+This art piece makes me feel calm.
+  1: 18
+  2: 43
+  3: 72
+  4: 238
+  5: 165
+
+This art piece makes me feel uneasy.
+  1: 167
+  2: 234
+  3: 61
+  4: 59
+  5: 15
+
+How many prominent colours do you notice in this painting?
+  1: 4
+  2: 82
+  3: 239
+  4: 110
+  5: 61
+  6: 16
+  7: 7
+  8: 3
+  9: 2
+  10: 2
+  11: 1
+  12: 3
+  13: 1
+  15: 2
+  20: 1
+  43: 1
+  100: 1
+
+How many objects caught your eye in the painting?
+  0: 1
+  1: 15
+  2: 129
+  3: 179
+  4: 94
+  5: 47
+  6: 22
+  7: 12
+  8: 2
+  9: 1
+  10: 4
+  11: 1
+  12: 2
+  13: 4
+  14: 9
+  15: 3
+  16: 1
+  17: 2
+  18: 1
+  20: 2
+  21: 1
+  22: 1
+  32: 1
+  43: 1
+  100: 1
+
+TOP 10 WORDS IN TEXT RESPONSES
+
+Describe how this painting makes you feel.
+  calm: 149
+  sky: 73
+  night: 61
+  peaceful: 49
+  sense: 42
+  awe: 39
+  wonder: 34
+  happy: 32
+  bit: 27
+  world: 25
+
+How much (in Canadian dollars) would you be willing to pay for this painting?
+  pay: 14
+  cad: 13
+  dollars: 9
+  million: 9
+  not: 8
+  around: 5
+  willing: 5
+  spend: 5
+  probably: 5
+  am: 4
+
+If you could purchase this painting, which room would you put that painting in?
+  room: 489
+  bedroom: 336
+  living: 314
+  dining: 175
+  office: 168
+  bathroom: 96
+
+If you could view this art in person, who would you want to view it with?
+  friends: 361
+  family: 345
+  members: 345
+  yourself: 304
+  coworkers: 154
+  classmates: 154
+  strangers: 127
+
+What season does this art piece remind you of?
+  winter: 293
+  summer: 208
+  spring: 115
+  fall: 99
+
+If this painting was a food, what would be?
+  blueberry: 68
+  ice: 58
+  cream: 58
+  soup: 42
+  chocolate: 30
+  cake: 29
+  pie: 24
+  cold: 19
+  pasta: 19
+  spaghetti: 18
+
+Imagine a soundtrack for this painting. Describe that soundtrack without naming any objects in the painting.
+  soundtrack: 104
+  music: 103
+  piano: 96
+  calm: 89
+  slow: 72
+  sound: 48
+  soft: 47
+  quiet: 44
+  melody: 38
+  something: 36
+
+================================================================================
+PAINTING: The Water Lily Pond
+Responses: 562
+
+NUMERIC VALUE COUNTS
+
+On a scale of 1–10, how intense is the emotion conveyed by the artwork?
+  1: 12
+  2: 28
+  3: 48
+  4: 55
+  5: 75
+  6: 67
+  7: 77
+  7.5: 1
+  8: 89
+  9: 45
+  9.6: 1
+  10: 37
+
+This art piece makes me feel sombre.
+  1: 330
+  2: 128
+  3: 33
+  4: 29
+  5: 16
+
+This art piece makes me feel content.
+  1: 6
+  2: 11
+  3: 28
+  4: 204
+  5: 286
+
+This art piece makes me feel calm.
+  1: 5
+  2: 13
+  3: 22
+  4: 180
+  5: 316
+
+This art piece makes me feel uneasy.
+  1: 390
+  2: 117
+  3: 16
+  4: 10
+  5: 3
+
+How many prominent colours do you notice in this painting?
+  0: 1
+  1: 121
+  2: 149
+  3: 131
+  4: 65
+  5: 28
+  6: 15
+  7: 6
+  8: 6
+  9: 2
+  10: 4
+  12: 1
+  15: 1
+  16: 1
+  20: 1
+  25: 1
+  30: 1
+
+How many objects caught your eye in the painting?
+  1: 202
+  2: 139
+  3: 112
+  4: 48
+  5: 16
+  6: 7
+  7: 2
+  8: 4
+  9: 1
+  10: 1
+  22: 1
+  30: 2
+
+TOP 10 WORDS IN TEXT RESPONSES
+
+Describe how this painting makes you feel.
+  happy: 179
+  calm: 175
+  peaceful: 82
+  relaxed: 73
+  warm: 44
+  content: 38
+  nature: 34
+  peace: 28
+  joyful: 25
+  bright: 24
+
+How much (in Canadian dollars) would you be willing to pay for this painting?
+  cad: 14
+  dollars: 9
+  pay: 7
+  million: 7
+  k: 5
+  not: 4
+  willing: 3
+  probably: 3
+  showing: 2
+  spend: 2
+
+If you could purchase this painting, which room would you put that painting in?
+  room: 601
+  living: 377
+  bedroom: 269
+  dining: 224
+  office: 183
+  bathroom: 165
+
+If you could view this art in person, who would you want to view it with?
+  family: 388
+  members: 388
+  friends: 354
+  yourself: 286
+  coworkers: 152
+  classmates: 152
+  strangers: 118
+
+What season does this art piece remind you of?
+  spring: 451
+  summer: 299
+  fall: 12
+  winter: 1
+
+If this painting was a food, what would be?
+  salad: 155
+  cake: 30
+  cream: 27
+  fresh: 25
+  green: 23
+  fruit: 22
+  tea: 21
+  matcha: 20
+  strawberry: 20
+  ice: 19
+
+Imagine a soundtrack for this painting. Describe that soundtrack without naming any objects in the painting.
+  soundtrack: 109
+  music: 97
+  piano: 83
+  calm: 78
+  happy: 61
+  upbeat: 58
+  soft: 58
+  sounds: 56
+  slow: 55
+  peaceful: 52
+
+
+Process finished with exit code 0

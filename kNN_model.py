@@ -118,7 +118,7 @@ X_train = df_temp.values.tolist()
 X_train = np.stack(X_train)
 
 t_valid = df_valid['Painting'].tolist()
-t_valid = np.stack(t_train)
+t_valid = np.stack(t_valid)
 
 df_temp = df_valid.drop(columns=['Painting'])
 X_valid = df_temp.values.tolist()
