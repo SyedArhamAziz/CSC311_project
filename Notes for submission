@@ -1,0 +1,20 @@
+Missing from the submission is the csv final_combined_search_results.csv, which is the grid search of the best possible
+hyper params combined.
+
+Notes on included file
+Save model saves our best weights and bias
+
+Model utils is the actual model functions
+
+Multiclass logistic regression.py is our initial version for testing and model comparision.
+
+tune___.py is just for hyperparameter testing, it runs grid search or random search which you can change by the string
+at the top on either the gradient descent params, the bow ones, or a combination of both. The csv's generated just have
+the output though we left the final combined one out since it had over 2000 entries
+
+Explored data is a text file with the data grouped in a readable way for the data exploration task.
+
+Knn_model.py is our first model created and is left here for reference.
+
+We have also included an unfinished Neural network that we attempted to implement but ran into troubles doing in
+neural.py

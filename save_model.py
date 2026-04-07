@@ -55,7 +55,7 @@ def prepare_train_features(train_df, include_bias=True):
     return X, mean, std, cat_columns, vocab_store
 
 
-def train_model(X, Y, classes, epochs=1000, lr=0.05, reg=0.00,):
+def train_model(X, Y, classes, epochs=1000, lr=0.05, reg=0.0001,):
     n, d = X.shape
     c = len(classes)
     
